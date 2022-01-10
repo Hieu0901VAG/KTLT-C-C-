@@ -1,0 +1,117 @@
+
+//2. Tong quat hoa kieu du lieu cho lop Array ( lop Array da dinh nghia trong cac assignment truoc)
+
+#include <iostream>
+
+using namespace std;
+template<class T>
+class Array
+{
+    int n;
+    T* data;
+public:
+    Array(int _n = 0, T _d = 0)
+    {
+        n = _n;
+        data = new T[n];
+        for (int i = 0; i < n; i++) {
+            data[i] = _d;
+        }
+    }
+
+    ~Array()
+    {
+        delete[] data;
+    }
+
+    Array(const Array& a) {
+        n = a.n;
+        data = new T[n];
+        for (int i = 0; i < n; i++) {
+            data[i] = a.data[i];
+        }
+    }
+    // nop chong []
+    T operator[] (int index)
+    {
+        return data[index];
+    }
+    T operator() ();
+    Array operator+(const Array& b) const
+    {
+        Array a;
+        a.n = n;
+        a.data = new T[a.n];
+        for (int i = 0; i < n; i++)
+        {
+            a.data[i] = data[i] + b.data[i];
+        }
+        return a;
+    }
+    Array operator-(const Array& b) const
+    {
+        Array a;
+        a.n = n;
+        a.data = new T[a.n];
+        for (int i = 0; i < n; i++)
+        {
+            a.data[i] = data[i] - b.data[i];
+        }
+        return a;
+    }
+    Array operator*(const Array& b) const
+    {
+        Array a;
+        a.n = n;
+        a.data = new T[a.n];
+        for (int i = 0; i < n; i++)
+        {
+            a.data[i] = data[i] - b.data[i];
+        }
+        return a;
+    }
+    friend ostream& operator<<(ostream& os, const Array& a);
+    friend istream& operator>>(istream& is, Array& a);
+};
+template<class T>
+T Array<T>:: operator() ()
+{
+    T max = data[0];
+    for (int i = 0; i < n; i++)
+    {
+        if (max < data[i])
+            max = data[i];
+    }
+    return max;
+}
+template<class T>
+ostream& operator<<(ostream& os, const Array<T>& a)
+{
+    os << endl << "Mang co " << a.n << " phan tu." << endl;
+    os << "Lan luot la: ";
+    for (int i = 0; i < a.n; i++) {
+        os << a.data[i] << " ";
+    }
+    return os;
+}
+template<class T>
+istream& operator>>(istream& is, Array<T>& a)
+{
+    cout << "Nhap so phan tu:";
+    is >> a.n;
+    cout << "Cac phan tu lan luot la:";
+    a.data = new T[a.n];
+    for (int i = 0; i < a.n; i++) {
+        is >> a.data[i];
+    }
+    return is;
+}
+int main()
+{
+    Array<int> a(5, 1);
+    cin >> a;
+    cout << a;
+    cout << a();
+
+
+}
